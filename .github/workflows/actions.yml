@@ -34,11 +34,12 @@ jobs:
         # run: cd client && npm run check-all
         run: cd client && npm run check-lint
 
-      # - name: Run Lint Action
-      #   uses: wearerequired/lint-action@v2
-      #   with:
-      #     eslint: true
-      #     prettier: true
+      - name: Run Lint Action
+        uses: wearerequired/lint-action@v2
+        with:
+          # eslint: true
+          # prettier: true
+          dotnet_format: true
 
   build-docker:
     runs-on: ubuntu-latest
