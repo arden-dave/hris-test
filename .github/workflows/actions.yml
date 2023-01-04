@@ -39,7 +39,7 @@ jobs:
       #     # dotnet_format: true
 
       - name: Run ESLint
-        run: cd client && npm run check-lint
+        run: cd client && npm run check-all
 
       - name: Run Lint Action
         uses: wearerequired/lint-action@v2
