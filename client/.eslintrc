@@ -9,6 +9,6 @@
   ],
   "rules": {
     "no-console": 1,
-    "eol-last": "always"
+    "eol-last": ["error", "always"]
   }
 }
