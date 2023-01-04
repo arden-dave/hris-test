@@ -9,40 +9,57 @@ jobs:
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
-      steps:
+    steps:
       - name: Checkout git repo
         uses: actions/checkout@v2
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-      
+          node-version: 16
+
       - name: Install modules
-        run: npm install
+        run: cd client && npm ci
+
+      # # ESLint and Prettier must be in `package.json`
+      # - name: Install Node.js dependencies
+      #   run: cd client && npm ci
 
       # - name: Set up .NET
       #   uses: actions/setup-dotnet@v1
       #   with:
       #     dotnet-version: "6.0.x"
-      
-      - name: Run linters
+
+      # - name: Run linters
+      #   uses: wearerequired/lint-action@v2
+      #   with:
+      #     # Enable linters
+      #     eslint: true
+      #     # prettier: true
+      #     # dotnet_format: true
+
+      - name: Run ESLint
+        run: cd client && npm run check-format && npm run check-lint
+
+      - name: Run Lint Action
         uses: wearerequired/lint-action@v2
         with:
-          # Enable linters
-          eslint: true
-          # prettier: true
-          # dotnet_format: true
+          # eslint: true
+          prettier: true
 
-      # - name: Run ESLint
-      #   run: eslint . --ext .js,.jsx,.ts,.tsx
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create backend env file
+        run: cp .env.api.example .env.api
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Build the Docker image
-  #       run: cp .env.api.example .env.api
-  #       run: cp .env.client.example .env.client
-  #       run: cp .env.db.example .env.db
-  #       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Create frontend env file
+        run: cp .env.client.example .env.client
+
+      - name: Create db env file
+        run: cp .env.db.example .env.db
+
+      - name: Build the Docker image
+        # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker compose build
