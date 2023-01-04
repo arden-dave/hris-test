@@ -30,22 +30,15 @@ jobs:
       #   with:
       #     dotnet-version: "6.0.x"
 
-      # - name: Run linters
+      - name: Run ESLint
+        # run: cd client && npm run check-all
+        run: cd client && npm run check-lint
+
+      # - name: Run Lint Action
       #   uses: wearerequired/lint-action@v2
       #   with:
-      #     # Enable linters
       #     eslint: true
-      #     # prettier: true
-      #     # dotnet_format: true
-
-      - name: Run ESLint
-        run: cd client && npm run check-all
-
-      - name: Run Lint Action
-        uses: wearerequired/lint-action@v2
-        with:
-          # eslint: true
-          prettier: true
+      #     prettier: true
 
   build-docker:
     runs-on: ubuntu-latest
